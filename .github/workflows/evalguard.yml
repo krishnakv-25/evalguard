@@ -1,0 +1,45 @@
+name: EvalGuard CI Quality Gate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  llm-evals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Unit Tests
+        run: |
+          python3 -m unittest discover -s tests -v
+
+      - name: Run EvalGuard Security & Quality Gate
+        run: |
+          python3 -m evalguard.cli run \
+            --suite examples/customer_support_eval.json \
+            --report-junit junit-results.xml \
+            --report-html evalguard-report.html \
+            --min-score 0.90 \
+            --max-failures 0
+
+      - name: Publish Test Results to GitHub Actions
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: junit-results.xml
+
+      - name: Upload HTML Quality Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evalguard-quality-report
+          path: evalguard-report.html

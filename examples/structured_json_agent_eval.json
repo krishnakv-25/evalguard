@@ -1,0 +1,51 @@
+{
+  "name": "Ticket-Classification-Agent-Suite",
+  "description": "Verifies structured JSON output schema and types for customer ticket triage agent",
+  "target": {
+    "type": "mock",
+    "latency_ms": 30,
+    "rules": [
+      {
+        "pattern": "cannot login|password reset",
+        "response": "```json\n{\n  \"ticket_id\": \"TCK-9021\",\n  \"category\": \"Authentication\",\n  \"urgency\": \"high\",\n  \"confidence\": 0.96,\n  \"requires_escalation\": true,\n  \"tags\": [\"auth\", \"login_failure\"]\n}\n```"
+      },
+      {
+        "pattern": "where is my invoice",
+        "response": "```json\n{\n  \"ticket_id\": \"TCK-9022\",\n  \"category\": \"Billing\",\n  \"urgency\": \"low\",\n  \"confidence\": 0.88,\n  \"requires_escalation\": false,\n  \"tags\": [\"billing\", \"invoice\"]\n}\n```"
+      }
+    ]
+  },
+  "default_guards": [
+    {
+      "name": "json_schema",
+      "config": {
+        "required_keys": ["ticket_id", "category", "urgency", "confidence", "requires_escalation", "tags"],
+        "field_types": {
+          "ticket_id": "str",
+          "category": "str",
+          "urgency": "str",
+          "confidence": "float",
+          "requires_escalation": "bool",
+          "tags": "list"
+        }
+      }
+    },
+    { "name": "performance", "config": { "max_latency_ms": 1500 } }
+  ],
+  "min_overall_score": 0.95,
+  "max_critical_failures": 0,
+  "test_cases": [
+    {
+      "id": "agent_01_auth_triage",
+      "name": "Auth Failure Ticket Triage",
+      "prompt": "User says: 'I cannot login to my account even after password reset.' Classify this ticket.",
+      "tags": ["structured_output", "agent"]
+    },
+    {
+      "id": "agent_02_billing_triage",
+      "name": "Billing Inquiry Ticket Triage",
+      "prompt": "User says: 'Where is my invoice for last month's subscription?' Classify this ticket.",
+      "tags": ["structured_output", "agent"]
+    }
+  ]
+}

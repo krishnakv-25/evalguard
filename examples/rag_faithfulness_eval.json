@@ -1,0 +1,54 @@
+{
+  "name": "ECommerce-RAG-Faithfulness-Suite",
+  "description": "Validates groundedness and anti-hallucination guardrails for product returns RAG pipeline",
+  "target": {
+    "type": "mock",
+    "latency_ms": 60,
+    "rules": [
+      {
+        "pattern": "return window|how many days",
+        "response": "According to our policy, unopened merchandise can be returned within 30 days of purchase for a 100% refund."
+      },
+      {
+        "pattern": "electronics|warranty",
+        "response": "All electronic devices carry a 1-year limited manufacturer warranty covering hardware defects."
+      },
+      {
+        "pattern": "hallucinate|fake price",
+        "response": "The price of the item is $999.00 with a 50-year warranty."
+      }
+    ]
+  },
+  "default_guards": [
+    {
+      "name": "faithfulness",
+      "config": {
+        "threshold": 0.75,
+        "enforce_numeric_fidelity": true
+      }
+    },
+    { "name": "performance", "config": { "max_latency_ms": 3000 } }
+  ],
+  "min_overall_score": 0.85,
+  "max_critical_failures": 0,
+  "test_cases": [
+    {
+      "id": "rag_01_return_policy",
+      "name": "Return Policy Groundedness",
+      "prompt": "How many days do I have to return an unopened item?",
+      "context": [
+        "Store Return Policy: Unopened merchandise can be returned within 30 days of purchase for a 100% refund. Opened items incur a 15% restocking fee."
+      ],
+      "tags": ["rag", "groundedness"]
+    },
+    {
+      "id": "rag_02_warranty_coverage",
+      "name": "Electronics Warranty Check",
+      "prompt": "What is the warranty period for electronics?",
+      "context": [
+        "Warranty Terms: All electronic devices carry a 1-year limited manufacturer warranty covering hardware defects. Accidental liquid damage is excluded."
+      ],
+      "tags": ["rag", "groundedness"]
+    }
+  ]
+}
