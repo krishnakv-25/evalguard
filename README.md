@@ -71,14 +71,15 @@ flowchart TD
 
 ## 📦 Installation & Setup
 
-EvalGuard requires Python 3.8+ and no third-party libraries:
-
+### Install via pip:
 ```bash
-# Clone the repository
+pip install evalguard-qe
+```
+
+### Or clone from source:
+```bash
 git clone https://github.com/krishnakv-25/evalguard.git
 cd evalguard
-
-# Optional: editable install
 pip install -e . --no-deps
 ```
 
