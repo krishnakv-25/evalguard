@@ -75,7 +75,7 @@ EvalGuard requires Python 3.8+ and no third-party libraries:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/evalguard.git
+git clone https://github.com/krishnakv-25/evalguard.git
 cd evalguard
 
 # Optional: editable install
