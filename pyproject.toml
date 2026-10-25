@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "evalguard-qe"
-version = "0.1.0"
+version = "0.1.1"
 description = "CI/CD Quality Gate & Automated Red-Teaming for GenAI & LLM Applications"
 readme = "README.md"
 authors = [{ name = "Krishna KV", email = "qe-community@evalguard.io" }]

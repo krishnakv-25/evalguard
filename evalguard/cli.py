@@ -170,6 +170,13 @@ def handle_list_guards(args: argparse.Namespace) -> int:
     return 0
 
 
+def handle_ui(args: argparse.Namespace) -> int:
+    """Launches the interactive Web UI Playground."""
+    from evalguard.playground import start_playground
+    start_playground(port=args.port, open_browser=not args.no_browser)
+    return 0
+
+
 def main() -> None:
     """Main CLI entrypoint."""
     parser = argparse.ArgumentParser(
@@ -207,6 +214,11 @@ def main() -> None:
     # Command: list-guards
     subparsers.add_parser("list-guards", help="List all available quality guards")
 
+    # Command: ui
+    ui_parser = subparsers.add_parser("ui", help="Launch interactive web playground in browser")
+    ui_parser.add_argument("--port", "-p", type=int, default=8080, help="Port to run web server on (default: 8080)")
+    ui_parser.add_argument("--no-browser", action="store_true", help="Do not open browser automatically")
+
     args = parser.parse_args()
 
     if not args.command:
@@ -221,6 +233,8 @@ def main() -> None:
         sys.exit(handle_init(args))
     elif args.command == "list-guards":
         sys.exit(handle_list_guards(args))
+    elif args.command == "ui":
+        sys.exit(handle_ui(args))
 
 
 if __name__ == "__main__":

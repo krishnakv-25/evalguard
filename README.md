@@ -109,16 +109,24 @@ python3 -m evalguard.cli fuzz \
   --report-html redteam_report.html
 ```
 
-### 3. Initialize a New Suite
+### 3. Launch Interactive Web Studio (Playground)
+Launch the zero-dependency browser playground for interactive demos, live prompt testing, and visual red-teaming:
+
+```bash
+evalguard ui --port 8080
+```
+Then open `http://localhost:8080` in your browser.
+
+### 4. Initialize a New Suite
 Scaffold a starter test suite template:
 
 ```bash
-python3 -m evalguard.cli init --output my_test_suite.json
+evalguard init --output my_test_suite.json
 ```
 
-### 4. List Available Guards
+### 5. List Available Guards
 ```bash
-python3 -m evalguard.cli list-guards
+evalguard list-guards
 ```
 
 ---

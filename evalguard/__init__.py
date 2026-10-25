@@ -1,6 +1,6 @@
 """EvalGuard: CI/CD Quality Gate & Automated Red-Teaming for GenAI & LLM Applications."""
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from evalguard.models import (
     TestCase,
@@ -31,6 +31,7 @@ from evalguard.targets import (
 )
 from evalguard.engine import EvalEngine
 from evalguard.fuzzer import RedTeamFuzzer
+from evalguard.playground import start_playground
 
 __all__ = [
     "__version__",
@@ -57,4 +58,5 @@ __all__ = [
     "create_target",
     "EvalEngine",
     "RedTeamFuzzer",
+    "start_playground",
 ]
